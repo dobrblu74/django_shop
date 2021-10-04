@@ -1,0 +1,6 @@
+venv/
+base_site/
+.idea/
+*.pyc
+/**/__pycache__/
+
