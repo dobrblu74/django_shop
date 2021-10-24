@@ -13,7 +13,7 @@
 					<li><a href="/">домой</a></li>
 					<li><a href="/products/" class="active">продукты</a></li>
 					<li><a href="/contacts/">контакты</a></li>
-					{% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
                         <li>
                             <a href="{% url 'auth:edit' %}">
                                 {{ user.first_name|default:'Пользователь' }}
@@ -22,9 +22,11 @@
                         {% if basket %}
                             <li><a href="{% url 'basket:view' %}">Корзина</a>
                                 <span>
-                                    ({{ basket|length }} шт.)
+                                    {{ basket.0.total_cost|floatformat:0 }} руб.
+                                    ({{ basket.0.total_quantity }} шт.)
                                 </span>
                             </li>
+
                         {% endif %}
                     {% endif %}
                     <li>
@@ -58,10 +60,11 @@
 				</ul>
 			</div>
 
+            {% if hot_product %}
 			<div class="details-products">
 				<div class="details-slider">
 					<div class="slider-product">
-						<img src="{% static 'geekshop/img/slider1.jpg' %}">
+						<img src="/media/{{ hot_product.image }}">
 					</div>
 					<div class="slider-control">
 						<div class="block">
@@ -70,12 +73,12 @@
 							</a>
 						</div>
 						<div class="block">
-							<a href="#"><img src="img/controll1.jpg" alt="">
+							<a href="#"><img src="{% static 'geekshop/img/controll1.jpg' %}" alt="">
 								<div class="text"></div>
 							</a>
 						</div>
 						<div class="block">
-							<a href="#"><img src="img/controll2.jpg" alt="">
+							<a href="#"><img src="{% static 'geekshop/img/controll2.jpg' %}" alt="">
 								<div class="text"></div>
 							</a>
 						</div>
@@ -83,22 +86,18 @@
 				</div>
 
 				<div class="description">
-					<h3 class="big-bold">Отличный стул</h3>
+					<h3 class="big-bold">{{ hot_product.name }}</h3>
 					<h3 class="red">горячее предложение</h3>
-					<p class="price"> 2585.9 <span>руб</span></p>
-					<a href="#" class="red-button">
+					<p class="price"> {{ hot_product.price }} <span>руб</span></p>
+					<a href="{% url 'products:detail' hot_product.pk %}" class="red-button">
 						заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
 					</a>
 					<div class="description-text">
-						<p>Расположитесь комфортно.</p>
-						<p>Отличное качество материалов
-						позволит вам это.</p>
-						<p>Различные цвета</p>
-						<p>высочайший уровень
-						эргономики и прочность.</p>
+                        {{ hot_product.description }}
 					</div>
 				</div>
 			</div>
+            {% endif %}
 
             <div class="products_list">
                   <div class="title clearfix">
@@ -108,14 +107,14 @@
                             </h2>
                       {% endif %}
                   </div>
-                  <div class="category-products clearfix">
+                  <div class="category-products products">
 
                     {% for product in products %}
                       <div class="block">
-                        <a href="{% url 'basket:add' product.pk %}">
+                        <a href="{% url 'products:detail' product.pk %}">
                           <img src="/media/{{ product.image }}" alt="product">
                           <div class="text">
-                            <img src="{% static 'img/icon-hover.png' %}" alt="hover">
+                            <img src="{% static 'geekshop/img/icon-hover.png' %}" alt="hover">
                               <h4>{{ product.name }}</h4>
                               <p>{{ product.description }}</p>
                           </div>
@@ -126,7 +125,7 @@
                   </div>
                 </div>
               </div>
-
+            {% if same_products %}
 			<div class="related">
 				<div class="title clearfix">
 					<h2>Похожие продукты</h2>
@@ -135,9 +134,9 @@
 				<div class="related-products clearfix">
                     {% for same_product in same_products %}
 					    <div class="block">
-                            <a href="#"><img src="/media/{{ same_product.image }}" alt="">
+                            <a href="{% url 'products:detail' same_product.pk %}"><img src="/media/{{ same_product.image }}" alt="">
                                 <div class="text">
-                                    <img src="img/icon-hover.png" alt="img">
+                                    <img src="{% static 'geekshop/img/icon-hover.png' %}" alt="img">
                                     <h4>{{ same_product.name }}</h4>
                                     <p>{{ same_product.description }}</p>
                                 </div>
@@ -146,5 +145,6 @@
                     {% endfor %}
 				</div>
 			</div>
+            {% endif %}
 		</div>
 {% endblock %}

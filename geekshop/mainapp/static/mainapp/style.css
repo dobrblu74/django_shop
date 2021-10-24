@@ -8,3 +8,19 @@
 	line-height: 17px;
 	margin-bottom: 22px;
 }
+
+.category-products {
+	display: flex;
+	justify-content: space-evenly;
+}
+.products .block a img {
+	float: left;
+}
+.products .block {
+	float: left;
+	margin: 15px;
+	display: block;
+	height: 370px;
+	width: 370px;
+	position: relative;
+}
