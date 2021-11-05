@@ -139,10 +139,16 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 
 class ProductCategoryListView(LoginRequiredMixin, ListView):
     model = ProductCategory
+    context_object_name = 'objects'
     template_name = 'adminapp/categories.html'
+
+    # def get_queryset(self):
+    #     filtered_categories = ProductCategory.objects.filter(product__pk=self.kwargs['pk'])
+    #     return filtered_categories
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductCategoryListView, self).get_context_data()
+        # context['product'] = self.kwargs.get('pk')
         context['title'] = 'админка/категории'
 
         return context
@@ -175,12 +181,19 @@ class ProductCategoryDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'adminapp/user_delete.html'
     success_url = reverse_lazy('admin_staff:categories')
 
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super(ProductCategoryDeleteView, self).get_context_data()
+    #     context['products'] = context['object'].products.all()
+    #
+    #     return context
+
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.is_active = False
         self.object.save()
 
         return HttpResponseRedirect(self.get_success_url())
+
 
 
 # def products(request, pk):
@@ -198,13 +211,20 @@ class ProductCategoryDeleteView(LoginRequiredMixin, DeleteView):
 #     return render(request, 'adminapp/products.html', content)
 
 
+
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
+    context_object_name = 'objects'
     template_name = 'adminapp/products.html'
+
+    def get_queryset(self):
+        filtered_products = Product.objects.filter(category__pk=self.kwargs['pk'])
+        return filtered_products
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductListView, self).get_context_data()
         context['title'] = 'админка/продукты'
+        context['category'] = self.kwargs.get('pk')
 
         return context
 
