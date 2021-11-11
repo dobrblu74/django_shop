@@ -143,12 +143,12 @@ class ProductCategoryListView(LoginRequiredMixin, ListView):
     template_name = 'adminapp/categories.html'
 
     # def get_queryset(self):
-    #     filtered_categories = ProductCategory.objects.filter(product__pk=self.kwargs['pk'])
+    #     filtered_categories = ProductCategory.objects.filter(category__pk=self.kwargs['pk'])
     #     return filtered_categories
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductCategoryListView, self).get_context_data()
-        # context['product'] = self.kwargs.get('pk')
+        context['category'] = self.kwargs.get('pk')
         context['title'] = 'админка/категории'
 
         return context
@@ -209,7 +209,6 @@ class ProductCategoryDeleteView(LoginRequiredMixin, DeleteView):
 #     }
 #
 #     return render(request, 'adminapp/products.html', content)
-
 
 
 class ProductListView(LoginRequiredMixin, ListView):
@@ -287,7 +286,7 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = ProductCategory
-    form_class = ProductCategoryEditForm
+    form_class = ProductEditForm
     template_name = 'adminapp/product_update.html'
     success_url = reverse_lazy('admin_staff:products')
     fields = '__all__'
