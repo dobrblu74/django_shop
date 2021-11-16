@@ -3,4 +3,5 @@ base_site/
 .idea/
 *.pyc
 /**/__pycache__/
+geekshop/.env
 
