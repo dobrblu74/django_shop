@@ -23,6 +23,10 @@ class Basket(models.Model):
     is_active = models.BooleanField(verbose_name='активна', default=True)
 
     @staticmethod
+    def get_item(pk):
+        return Basket.objects.filter(pk=pk).first()
+
+    @staticmethod
     def get_items(user):
         return Basket.objects.filter(user=user)
 
@@ -41,3 +45,6 @@ class Basket(models.Model):
         _items = Basket.objects.filter(user=self.user)
         _total_cost = sum(list(map(lambda x: x.product_cost, _items)))
         return _total_cost
+
+
+
