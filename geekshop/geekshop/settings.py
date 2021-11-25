@@ -28,7 +28,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECRET_KEY = 'django-insecure-4xrfp_53-3j1^7ab$v_n0en%vx^e193r$@bfyujjpi%-lf2_!p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -143,6 +143,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "geekshop", "static"),
